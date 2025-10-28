@@ -1,0 +1,39 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: adminuser
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: quickchat
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  backend:
+    build: .
+    command: >
+      sh -c "python src/manage.py migrate &&
+             python src/manage.py collectstatic --noinput &&
+             python src/manage.py runserver 0.0.0.0:8000"
+    environment:
+      DATABASE_URL: postgres://adminuser:password@db:5432/quickchat
+      SECRET_KEY: django-insecure-micl#((a8wr**$_12b#a)si*8-eg#3#xxavta8o9%nmvlmm7lu
+    volumes:
+      - static_volume:/app/src/static
+      - media_volume:/app/src/media
+    depends_on:
+      - db
+    networks:
+      - app-network
+    ports:
+      - "8000:8000"
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
+
+networks:
+  app-network:
+    driver: bridge
