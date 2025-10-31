@@ -1,7 +1,6 @@
-import sys
 import requests
-from PyQt6.QtWidgets import QApplication, QWidget
-from src.designers.register import Ui_RegisterForm
+from PyQt6.QtWidgets import QWidget
+from frontend.src.designers.register import Ui_RegisterForm
 
 
 class RegisterForm(QWidget, Ui_RegisterForm):
@@ -11,9 +10,9 @@ class RegisterForm(QWidget, Ui_RegisterForm):
 
     def initUI(self):
         self.setupUi(self)
-        self.login_btn = self.pushButtonLogin.clicked.connect(self.get_acces_token)
+        self.login_btn = self.pushButtonLogin.clicked.connect(self.user_register)
 
-    def get_acces_token(self):
+    def user_register(self):
         self.username_form = self.lineEditUsername.text()
         self.email_form = self.lineEditEmail.text()
         self.password_form = self.lineEditPassword.text()
@@ -26,9 +25,3 @@ class RegisterForm(QWidget, Ui_RegisterForm):
         tokens = requests.post('http://127.0.0.1:8000/api/register/', data=data)
         print(tokens.text)
 
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    ex = RegisterForm()
-    ex.show()
-    sys.exit(app.exec())
