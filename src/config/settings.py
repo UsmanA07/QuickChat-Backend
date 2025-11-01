@@ -22,7 +22,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.postgres',
     'corsheaders',
+
     'apps.user.apps.UserConfig',
+    'apps.chat.apps.ChatConfig',
 ]
 
 MIDDLEWARE = [
@@ -54,6 +56,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
+ASGI_APPLICATION = 'config.asgi.application'
 
 DATABASES = {
     'default': {
