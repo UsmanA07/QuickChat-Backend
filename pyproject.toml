@@ -9,12 +9,14 @@ readme = "README.md"
 python = "^3.12"
 djangorestframework = "^3.16.1"
 djangorestframework-simplejwt = "^5.5.1"
-drf-spectacular = "^0.28.0"
 psycopg2-binary = "^2.9.11"
 setuptools = "^80.9.0"
 django-cors-headers = "^4.9.0"
 pyqt6 = "^6.10.0"
 requests = "^2.32.5"
+drf-spectacular = "^0.28.0"
+centrifuge-python = "^0.4.1"
+qasync = "^0.28.0"
 
 
 [build-system]

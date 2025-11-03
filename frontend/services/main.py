@@ -1,7 +1,7 @@
 import sys
 from PyQt6.QtWidgets import QApplication
 
-from frontend.src.services.authorization import LoginForm
+from frontend.services.authorization import LoginForm
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

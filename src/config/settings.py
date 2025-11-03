@@ -64,7 +64,7 @@ DATABASES = {
         'NAME': 'quickchat',
         'USER': 'adminuser',
         'PASSWORD': 'password',
-        'HOST': 'db',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }

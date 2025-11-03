@@ -1,7 +1,7 @@
 import requests
 from PyQt6.QtWidgets import QWidget
-from frontend.src.designers.login import Ui_LoginForm
-from frontend.src.designers.register import Ui_RegisterForm
+from designers.login import Ui_LoginForm
+from designers.register import Ui_RegisterForm
 
 
 class LoginForm(QWidget, Ui_LoginForm):
@@ -33,9 +33,9 @@ class LoginForm(QWidget, Ui_LoginForm):
 class RegisterForm(QWidget, Ui_RegisterForm):
     def __init__(self):
         super().__init__()
-        self.initUI()
+        self.init_ui()
 
-    def initUI(self):
+    def init_ui(self):
         self.setupUi(self)
         self.login_btn = self.pushButtonRegister.clicked.connect(self.user_register)
         self.redirect_to_login_btn = self.pushButtonLogin.clicked.connect(self.redirect_to_login_form)

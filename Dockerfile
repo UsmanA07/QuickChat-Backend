@@ -2,11 +2,14 @@ FROM python:3.12.3
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    build-essential \
-    libpq-dev \
-    curl && \
+        build-essential \
+        libpq-dev \
+        curl \
+        libgl1-mesa-glx \
+        libxkbcommon0 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
 
 RUN pip install poetry
 
