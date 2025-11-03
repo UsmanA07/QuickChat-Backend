@@ -7,34 +7,59 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
-from PyQt6.QtWidgets import QHBoxLayout, QWidget
 
 
-class Ui_ContactSelector(object):
-    def setupUi(self, ContactSelector):
-        ContactSelector.setObjectName("ContactSelector")
-        ContactSelector.resize(400, 500)
-        self.verticalLayout = QtWidgets.QVBoxLayout(ContactSelector)
-        self.verticalLayout.setContentsMargins(20, 20, 20, 20)
+class Ui_ChatWindow(object):
+    def setupUi(self, ChatWindow):
+        ChatWindow.setObjectName("ChatWindow")
+        ChatWindow.resize(500, 600)
+        self.verticalLayout = QtWidgets.QVBoxLayout(ChatWindow)
+        self.verticalLayout.setContentsMargins(15, 15, 15, 15)
         self.verticalLayout.setSpacing(10)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.labelSearch = QtWidgets.QLabel(parent=ContactSelector)
-        self.labelSearch.setObjectName("labelSearch")
-        self.verticalLayout.addWidget(self.labelSearch)
-        self.lineEditSearch = QtWidgets.QLineEdit(parent=ContactSelector)
-        self.lineEditSearch.setObjectName("lineEditSearch")
-        self.verticalLayout.addWidget(self.lineEditSearch)
-        self.listWidgetContacts = QtWidgets.QListWidget(parent=ContactSelector)
-        self.listWidgetContacts.setAlternatingRowColors(True)
-        self.listWidgetContacts.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)
-        self.listWidgetContacts.setObjectName("listWidgetContacts")
-        self.verticalLayout.addWidget(self.listWidgetContacts)
-        self.horizontalLayoutButtons = QtWidgets.QHBoxLayout()
-        self.horizontalLayoutButtons.setObjectName("horizontalLayoutButtons")
-        self.pushButtonSelect = QtWidgets.QPushButton(parent=ContactSelector)
-        self.pushButtonSelect.setStyleSheet("\n"
+        self.labelContactName = QtWidgets.QLabel(parent=ChatWindow)
+        self.labelContactName.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.labelContactName.setStyleSheet("\n"
+"       QLabel {\n"
+"        font-size: 16px;\n"
+"        font-weight: bold;\n"
+"        color: #2c3e50;\n"
+"        padding: 8px;\n"
+"        background-color: #ecf0f1;\n"
+"        border-radius: 4px;\n"
+"       }\n"
+"      ")
+        self.labelContactName.setObjectName("labelContactName")
+        self.verticalLayout.addWidget(self.labelContactName)
+        self.scrollArea = QtWidgets.QScrollArea(parent=ChatWindow)
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollArea.setObjectName("scrollArea")
+        self.scrollAreaWidgetContents = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 470, 400))
+        self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
+        self.verticalLayoutMessages = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
+        self.verticalLayoutMessages.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayoutMessages.setSpacing(8)
+        self.verticalLayoutMessages.setObjectName("verticalLayoutMessages")
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+        self.verticalLayout.addWidget(self.scrollArea)
+        self.horizontalLayoutInput = QtWidgets.QHBoxLayout()
+        self.horizontalLayoutInput.setObjectName("horizontalLayoutInput")
+        self.lineEditMessage = QtWidgets.QLineEdit(parent=ChatWindow)
+        self.lineEditMessage.setStyleSheet("\n"
+"         QLineEdit {\n"
+"          padding: 10px;\n"
+"          border: 1px solid #bdc3c7;\n"
+"          border-radius: 4px;\n"
+"          font-size: 14px;\n"
+"         }\n"
+"        ")
+        self.lineEditMessage.setObjectName("lineEditMessage")
+        self.horizontalLayoutInput.addWidget(self.lineEditMessage)
+        self.pushButtonSend = QtWidgets.QPushButton(parent=ChatWindow)
+        self.pushButtonSend.setStyleSheet("\n"
 "         QPushButton {\n"
-"          background-color: #4CAF50;\n"
+"          background-color: #3498db;\n"
 "          color: white;\n"
 "          border: none;\n"
 "          padding: 10px 20px;\n"
@@ -42,42 +67,19 @@ class Ui_ContactSelector(object):
 "          border-radius: 4px;\n"
 "         }\n"
 "         QPushButton:hover {\n"
-"          background-color: #45a049;\n"
+"          background-color: #2980b9;\n"
 "         }\n"
 "        ")
-        self.pushButtonSelect.setObjectName("pushButtonSelect")
-        self.horizontalLayoutButtons.addWidget(self.pushButtonSelect)
-        self.pushButtonCancel = QtWidgets.QPushButton(parent=ContactSelector)
-        self.pushButtonCancel.setStyleSheet("\n"
-"         QPushButton {\n"
-"          background-color: #f44336;\n"
-"          color: white;\n"
-"          border: none;\n"
-"          padding: 10px 20px;\n"
-"          font-size: 14px;\n"
-"          border-radius: 4px;\n"
-"         }\n"
-"         QPushButton:hover {\n"
-"          background-color: #d32f2f;\n"
-"         }\n"
-"        ")
-        self.pushButtonCancel.setObjectName("pushButtonCancel")
-        self.horizontalLayoutButtons.addWidget(self.pushButtonCancel)
-        button_container = QWidget()
-        button_layout = QHBoxLayout(button_container)
-        button_layout.setContentsMargins(0, 0, 0, 0)
-        button_layout.addWidget(self.pushButtonSelect)
-        button_layout.addWidget(self.pushButtonCancel)
-        button_layout.addStretch()
-        self.verticalLayout.addWidget(button_container)
+        self.pushButtonSend.setObjectName("pushButtonSend")
+        self.horizontalLayoutInput.addWidget(self.pushButtonSend)
+        self.verticalLayout.addLayout(self.horizontalLayoutInput)
 
-        self.retranslateUi(ContactSelector)
-        QtCore.QMetaObject.connectSlotsByName(ContactSelector)
+        self.retranslateUi(ChatWindow)
+        QtCore.QMetaObject.connectSlotsByName(ChatWindow)
 
-    def retranslateUi(self, ContactSelector):
+    def retranslateUi(self, ChatWindow):
         _translate = QtCore.QCoreApplication.translate
-        ContactSelector.setWindowTitle(_translate("ContactSelector", "Выбор контакта"))
-        self.labelSearch.setText(_translate("ContactSelector", "Поиск контакта:"))
-        self.lineEditSearch.setPlaceholderText(_translate("ContactSelector", "Введите имя или email"))
-        self.pushButtonSelect.setText(_translate("ContactSelector", "Выбрать"))
-        self.pushButtonCancel.setText(_translate("ContactSelector", "Отмена"))
+        ChatWindow.setWindowTitle(_translate("ChatWindow", "Чат"))
+        self.labelContactName.setText(_translate("ChatWindow", "Имя собеседника"))
+        self.lineEditMessage.setPlaceholderText(_translate("ChatWindow", "Введите сообщение..."))
+        self.pushButtonSend.setText(_translate("ChatWindow", "Отправить"))

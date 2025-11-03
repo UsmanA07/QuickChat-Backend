@@ -1,5 +1,6 @@
 import requests
 from PyQt6.QtWidgets import QWidget
+
 from designers.login import Ui_LoginForm
 from designers.register import Ui_RegisterForm
 from frontend.services.contacts import ContactSelectorWindow
@@ -12,27 +13,28 @@ class LoginForm(QWidget, Ui_LoginForm):
 
     def init_ui(self):
         self.setupUi(self)
-        self.pushButtonLogin.clicked.connect(self.get_access_token)
-        # self.pushButtonLogin.clicked.connect(self.redirect_to_contacts_form)
+        self.pushButtonLogin.clicked.connect(self.user_login)
+        self.pushButtonRegister.clicked.connect(self.redirect_to_register_form)
 
-    def get_access_token(self):
-        self.username_form = self.lineEditLogin.text()
-        self.password_form = self.lineEditPassword.text()
+    def user_login(self):
+        username_form = self.lineEditLogin.text()
+        password_form = self.lineEditPassword.text()
         data = {
-            'username': self.username_form,
-            'password': self.password_form
+            'username': username_form,
+            'password': password_form
         }
-        self.token = requests.post('http://127.0.0.1:8000/api/token/', data=data)
-        if 'access' in self.token.text and 'refresh' in self.token.text:
+        token = requests.post('http://127.0.0.1:8000/api/token/', data=data)
+        if 'access' in token.text and 'refresh' in token.text:
+            f = open('frontend/config.txt', mode='w')
+            f.write(token.json()['access'])
             self.redirect_to_contacts_form()
-        else:
-            pass
-        print(self.token.text)
+        print(token.text)
 
     def redirect_to_register_form(self):
         self.close()
         self.register_form = RegisterForm()
         self.register_form.show()
+        print('registerrrr')
 
     def redirect_to_contacts_form(self):
         self.close()
@@ -47,21 +49,23 @@ class RegisterForm(QWidget, Ui_RegisterForm):
 
     def init_ui(self):
         self.setupUi(self)
-        self.login_btn = self.pushButtonRegister.clicked.connect(self.user_register)
-        self.redirect_to_login_btn = self.pushButtonLogin.clicked.connect(self.redirect_to_login_form)
+        self.pushButtonRegister.clicked.connect(self.user_register)
+        self.pushButtonLogin.clicked.connect(self.redirect_to_login_form)
 
     def user_register(self):
-        self.username_form = self.lineEditUsername.text()
-        self.email_form = self.lineEditEmail.text()
-        self.password_form = self.lineEditPassword.text()
+        username_form = self.lineEditUsername.text()
+        email_form = self.lineEditEmail.text()
+        password_form = self.lineEditPassword.text()
         data = {
-            'username': self.username_form,
-            'email': self.email_form,
-            'password': self.password_form
+            'username': username_form,
+            'email': email_form,
+            'password': password_form
         }
 
-        tokens = requests.post('http://127.0.0.1:8000/api/register/', data=data)
-        print(tokens.text)
+        token = requests.post('http://127.0.0.1:8000/api/register/', data=data)
+        # if 'blank' not in token.text:
+        #     self.redirect_to_login_form()
+        print(token.text)
 
     def redirect_to_login_form(self):
         self.close()
