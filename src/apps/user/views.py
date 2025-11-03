@@ -4,14 +4,15 @@ from rest_framework.views import APIView
 
 from apps.user.dtos import UserRegisterDTO
 from apps.user.models import User
-from apps.user.serializers import UserSerializer
+from apps.user.serializers import *
 
 
 class CreateUserView(APIView):
     permission_classes = [permissions.AllowAny]
 
-    def post(self, request):
-        serializer = UserSerializer(data=request.data)
+    @staticmethod
+    def post(request):
+        serializer = CreateUserSerializer(data=request.data)
         print(serializer)
         if not serializer.is_valid():
             print(f'not validated')
@@ -27,3 +28,7 @@ class CreateUserView(APIView):
         print(user)
         return Response(status=201)
 
+
+class ListUserView(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = ListUserSerializer
