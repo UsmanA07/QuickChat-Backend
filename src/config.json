@@ -1,4 +1,7 @@
 {
+  "http_server": {
+    "port": "8001"
+  },
   "client": {
     "token": {
       "hmac_secret_key": "CBRnSLM608tup1DV0FkgGph6j_wIcS4UOI9mFdrYyJ7wpgPU0mg7lwXqahy6mr95j5Gjng-Yl1hdNeUnB65yJA"
