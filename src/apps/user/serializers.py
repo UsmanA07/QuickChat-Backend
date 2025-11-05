@@ -8,6 +8,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
         model = User
         fields = '__all__'
 
+
 class ListUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

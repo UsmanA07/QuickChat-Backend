@@ -32,3 +32,14 @@ class CreateUserView(APIView):
 class ListUserView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = ListUserSerializer
+
+
+class UserView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    @staticmethod
+    def get(request, user_id):
+        username = User.objects.get(id=user_id)
+        serializer = ListUserSerializer(username)
+        return Response(serializer.data)
+
