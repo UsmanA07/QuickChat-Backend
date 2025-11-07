@@ -1,6 +1,8 @@
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 from apps.user.dtos import UserRegisterDTO
 from apps.user.models import User
@@ -34,12 +36,6 @@ class ListUserView(generics.ListAPIView):
     serializer_class = ListUserSerializer
 
 
-class UserView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
-    @staticmethod
-    def get(request, user_id):
-        username = User.objects.get(id=user_id)
-        serializer = ListUserSerializer(username)
-        return Response(serializer.data)
-
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+    token_obtain_pair = TokenObtainPairView.as_view()

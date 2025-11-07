@@ -86,12 +86,12 @@ class LoginForm(QWidget, Ui_LoginForm):
         }
         response = requests.post('http://127.0.0.1:8000/api/token/', data=data)
         if 'access' in response.text and 'refresh' in response.text:
-            self.subscribe_to_self(username_line)
             self.redirect_to_contacts_form()
             print(response.json()['access'])
             self.manager.save_token(response.json()['access'])
             print(type(self.manager.get_token_sync()))
             print(self.manager.get_token_sync())
+            self.subscribe_to_self(username_line)
 
     def redirect_to_register_form(self):
         self.close()
@@ -111,7 +111,7 @@ class LoginForm(QWidget, Ui_LoginForm):
             use_protobuf=False,
         )
         sub = client.new_subscription(
-            channel=f'user_{username}',
+            channel=f'user:{username}',
             events=SubscriptionEventLoggerHandler(),
             # get_token=get_subscription_token,
         )

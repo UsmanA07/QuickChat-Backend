@@ -21,6 +21,13 @@
   "channel": {
     "without_namespace": {
       "allow_subscribe_for_client": true
-    }
+    },
+    "namespaces":[
+      {
+        "name": "user",
+        "allow_subscribe_for_client": true,
+        "presence": true
+      }
+    ]
   }
 }
