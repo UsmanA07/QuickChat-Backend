@@ -1,9 +1,9 @@
 from PyQt6.QtCore import QSettings
 
 
-class UserTokenManager:
+class TokenManager:
     def __init__(self):
-        self.settings = QSettings("app", "chat1")
+        self.settings = QSettings("app", "sender_token")
 
     def save_token(self, token):
         self.settings.setValue("token", token)
@@ -12,17 +12,35 @@ class UserTokenManager:
     async def get_token(self):
         return self.settings.value("token", None)
 
-    async def get_username(self):
-        return self.settings.value("username", None)
-
     def get_token_sync(self):
         return self.settings.value("token", None)
+
+    def delete_token(self):
+        self.settings.remove("token")
+
+
+class RecipientManager:
+    def __init__(self):
+        self.settings = QSettings('app', 'recipient_username')
+
+    def save_token(self, username):
+        self.settings.setValue("username", username)
 
     def get_username_sync(self):
         return self.settings.value("username", None)
 
-    def delete_token(self):
-        self.settings.remove("token")
+    def delete_username(self):
+        self.settings.remove("username")
+
+class UsernameManager:
+    def __init__(self):
+        self.settings = QSettings('app', 'username')
+
+    def save_username(self, username):
+        self.settings.setValue("username", username)
+
+    def get_username_sync(self):
+        return self.settings.value("username", None)
 
     def delete_username(self):
         self.settings.remove("username")
