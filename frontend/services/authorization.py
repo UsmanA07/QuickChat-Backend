@@ -1,4 +1,3 @@
-from asyncio import sleep
 import asyncio
 import requests
 from PyQt6.QtWidgets import QWidget
@@ -10,61 +9,6 @@ from designers.login import Ui_LoginForm
 from designers.register import Ui_RegisterForm
 from frontend.services.contacts import ContactSelectorWindow
 from frontend.config import TokenManager
-
-
-class ClientEventLoggerHandler(ClientEventHandler):
-    async def on_connecting(self, ctx: ConnectingContext) -> None:
-        print("connecting: %s", ctx)
-
-    async def on_connected(self, ctx: ConnectedContext) -> None:
-        print("connected: %s", ctx)
-
-    async def on_disconnected(self, ctx: DisconnectedContext) -> None:
-        print("disconnected: %s", ctx)
-
-    async def on_error(self, ctx: ErrorContext) -> None:
-        print("client error: %s", ctx)
-
-    async def on_subscribed(self, ctx: ServerSubscribedContext) -> None:
-        print("subscribed server-side sub: %s", ctx.data)
-
-    async def on_subscribing(self, ctx: ServerSubscribingContext) -> None:
-        print("subscribing server-side sub: %s", ctx.channel)
-
-    async def on_unsubscribed(self, ctx: ServerUnsubscribedContext) -> None:
-        print("unsubscribed from server-side sub: %s", ctx.channel)
-
-    async def on_publication(self, ctx: ServerPublicationContext) -> None:
-        print("publication from server-side sub: %s", ctx.pub.data)
-
-    async def on_join(self, ctx: ServerJoinContext) -> None:
-        print("join in server-side sub: %s", ctx)
-
-    async def on_leave(self, ctx: ServerLeaveContext) -> None:
-        print("leave in server-side sub: %s", ctx)
-
-
-class SubscriptionEventLoggerHandler(SubscriptionEventHandler):
-    async def on_subscribing(self, ctx: SubscribingContext) -> None:
-        print("subscribing: %s", ctx)
-
-    async def on_subscribed(self, ctx: SubscribedContext) -> None:
-        print("subscribed: %s", ctx)
-
-    async def on_unsubscribed(self, ctx: UnsubscribedContext) -> None:
-        print("unsubscribed: %s", ctx)
-
-    async def on_publication(self, ctx: PublicationContext) -> None:
-        print("publication: %s", ctx.pub.data)
-
-    async def on_join(self, ctx: JoinContext) -> None:
-        print("join: %s", ctx)
-
-    async def on_leave(self, ctx: LeaveContext) -> None:
-        print("leave: %s", ctx)
-
-    async def on_error(self, ctx: SubscriptionErrorContext) -> None:
-        print("subscription error: %s", ctx)
 
 
 class CentrifugeWorker(QThread):
@@ -186,14 +130,12 @@ class LoginForm(QWidget, Ui_LoginForm):
     def subscribe_to_self(self, username):
         self.client = Client(
             "ws://127.0.0.1:8001/connection/websocket",
-            events=ClientEventLoggerHandler(),
             get_token=self.manager.get_token,
             use_protobuf=False,
         )
 
         sub = self.client.new_subscription(
             channel=f'user:{username}',
-            events=SubscriptionEventLoggerHandler(),
         )
 
         self._centrifuge_worker = CentrifugeWorker(self.client, sub)
