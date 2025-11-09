@@ -2,7 +2,7 @@ import asyncio
 from PyQt6.QtWidgets import QWidget, QHBoxLayout, QLabel
 from PyQt6.QtCore import QThread, pyqtSignal
 from centrifuge import Client, PublicationContext, SubscriptionEventHandler
-from config import RecipientManager, TokenManager, UsernameManager
+from services.config import RecipientManager, TokenManager, UsernameManager
 from frontend.designers.chat import Ui_ChatWindow
 import requests
 
@@ -12,10 +12,10 @@ class CentrifugeChatWorker(QThread):
     status_changed = pyqtSignal(str)
     error_occurred = pyqtSignal(str)
 
-    def __init__(self, token_manager, recipient_manager):
+    def __init__(self, token_manager, sort_username):
         super().__init__()
         self.token_manager = token_manager
-        self.recipient_manager = recipient_manager
+        self.sort_username = sort_username
         self._should_stop = False
 
     def run(self):
@@ -35,7 +35,7 @@ class CentrifugeChatWorker(QThread):
             )
 
             subscription = client.new_subscription(
-                channel=f'user:{self.recipient_manager.get_username_sync()}',
+                channel=f'chat:{self.sort_username}',
                 events=CentrifugeEventHandler(self.message_received)
             )
 
@@ -46,7 +46,7 @@ class CentrifugeChatWorker(QThread):
             self.status_changed.emit("Subscribed")
 
             try:
-                history = await subscription.history(limit=100)
+                history = await subscription.history(limit=300)
                 for pub in getattr(history, 'publications', []):
                     if hasattr(pub, 'data'):
                         self.message_received.emit(pub.data)
@@ -125,8 +125,11 @@ class ChatWindow(QWidget, Ui_ChatWindow):
             self.scrollArea.verticalScrollBar().maximum()
         )
 
+    def sort_username(self):
+        return '_'.join(sorted([self.recipient_manager.get_username_sync(), self.username_manager.get_username_sync()]))
+
     def setup_chat_connection(self):
-        self.worker = CentrifugeChatWorker(self.token_manager, self.recipient_manager)
+        self.worker = CentrifugeChatWorker(self.token_manager, self.sort_username())
         self.worker.message_received.connect(self.display_message)
         self.worker.start()
 
@@ -142,7 +145,7 @@ class ChatWindow(QWidget, Ui_ChatWindow):
         data = {'recipient': recipient, 'sender': sender, 'message': text}
 
         try:
-            response = requests.post('http://127.0.0.1:8000/api/send/', headers=headers, data=data)
+            response = requests.post('http://127.0.0.1:8000/api/chat/', headers=headers, data=data)
             if response.status_code == 200:
                 self.lineEditMessage.clear()
                 self.display_message({'sender': sender, 'message': text})

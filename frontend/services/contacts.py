@@ -1,8 +1,8 @@
-from PyQt6.QtWidgets import QApplication, QMainWindow, QListWidgetItem, QWidget, QHBoxLayout, QLabel, QVBoxLayout
+from PyQt6.QtWidgets import QListWidgetItem, QWidget
 import requests
+from centrifuge import Client
 
-
-from config import TokenManager, RecipientManager
+from services.config import *
 from designers.contacts import Ui_ContactSelector
 from services.chat import ChatWindow
 
@@ -10,9 +10,11 @@ from services.chat import ChatWindow
 class ContactSelectorWindow(QWidget, Ui_ContactSelector):
     def __init__(self):
         super().__init__()
+        self.token_manager = TokenManager()
+        self.recipient_username = RecipientManager()
+        self.username = UsernameManager()
         self.init_ui()
         self.get_contacts_for_api()
-        self.manager = RecipientManager()
 
     def init_ui(self):
         self.setupUi(self)
@@ -25,10 +27,12 @@ class ContactSelectorWindow(QWidget, Ui_ContactSelector):
             self.listWidgetContacts.addItem(item)
 
     def redirect_to_chat(self, item):
-        self.manager.save_token(item.text())
+        self.recipient_username.save_username(item.text())
         print(item.text())
-        print(self.manager.get_username_sync())
+        print(self.recipient_username.get_username_sync())
         self.close()
         self.chat_window = ChatWindow()
         self.chat_window.show()
 
+    def sort_id_services(self):
+        return '_'.join(sorted([self.recipient_username.get_username_sync(), self.username.get_username_sync()]))

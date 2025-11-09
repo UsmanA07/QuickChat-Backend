@@ -1,14 +1,14 @@
 import asyncio
 import requests
 from PyQt6.QtWidgets import QWidget
-from PyQt6.QtCore import QThread, pyqtSignal, QObject
+from PyQt6.QtCore import QThread, pyqtSignal
 
 from centrifuge import *
-from config import UsernameManager
+from services.config import UsernameManager
 from designers.login import Ui_LoginForm
 from designers.register import Ui_RegisterForm
 from frontend.services.contacts import ContactSelectorWindow
-from frontend.config import TokenManager
+from services.config import TokenManager
 
 
 class CentrifugeWorker(QThread):

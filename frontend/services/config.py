@@ -23,7 +23,7 @@ class RecipientManager:
     def __init__(self):
         self.settings = QSettings('app', 'recipient_username')
 
-    def save_token(self, username):
+    def save_username(self, username):
         self.settings.setValue("username", username)
 
     def get_username_sync(self):
