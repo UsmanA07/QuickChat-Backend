@@ -5,5 +5,5 @@ from apps.chat.views import *
 app_name = 'chat'
 
 urlpatterns = [
-    path('chat/', CreateChatView.as_view()),
+    path('send/', CreateChatView.as_view()),
 ]

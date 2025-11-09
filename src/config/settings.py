@@ -141,3 +141,5 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
+
+API_KEY = 'jPhNbyCG_jlLRB73nR9pR5Qt_YuIicDo9cOJzBxAXIOUYxCbuwPZB8Ce1GDKopUzz8nHMA_C53ZgeFnFFCdkRA'
