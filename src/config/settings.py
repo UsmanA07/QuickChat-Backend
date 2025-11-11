@@ -64,7 +64,7 @@ DATABASES = {
         'NAME': 'quickchat',
         'USER': 'adminuser',
         'PASSWORD': 'password',
-        'HOST': 'localhost',
+        'HOST': 'db',
         'PORT': '5432',
     }
 }
@@ -142,4 +142,4 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
 ]
 
-API_KEY = 'jPhNbyCG_jlLRB73nR9pR5Qt_YuIicDo9cOJzBxAXIOUYxCbuwPZB8Ce1GDKopUzz8nHMA_C53ZgeFnFFCdkRA'
+CENTRIFUGO_API_KEY = 'jPhNbyCG_jlLRB73nR9pR5Qt_YuIicDo9cOJzBxAXIOUYxCbuwPZB8Ce1GDKopUzz8nHMA_C53ZgeFnFFCdkRA'

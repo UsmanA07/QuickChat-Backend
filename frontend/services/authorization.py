@@ -160,7 +160,7 @@ class RegisterForm(QWidget, Ui_RegisterForm):
 
     def init_ui(self):
         self.setupUi(self)
-        self.pushButtonRegister.clicked.connect(self.user_register)
+        self.pushButtonRegister.clicked.connect(self.push_register_btn)
         self.pushButtonLogin.clicked.connect(self.redirect_to_login_form)
 
     def user_register(self):
@@ -175,12 +175,16 @@ class RegisterForm(QWidget, Ui_RegisterForm):
 
         try:
             response = requests.post('http://127.0.0.1:8000/api/register/', data=data)
-            if response.status_code == 200:
+            if response.status_code == 201:
                 print("Registration successful")
             else:
                 print(f"Registration failed: {response.status_code}")
         except Exception as e:
             print(f"Registration error: {e}")
+
+    def push_register_btn(self):
+        self.user_register()
+        self.redirect_to_login_form()
 
     def redirect_to_login_form(self):
         self.close()

@@ -19,31 +19,24 @@ services:
     environment:
       DATABASE_URL: postgres://adminuser:password@db:5432/quickchat
       SECRET_KEY: django-insecure-micl#((a8wr**$_12b#a)si*8-eg#3#xxavta8o9%nmvlmm7lu
+      CENTRIFUGO_API_KEY: jPhNbyCG_jlLRB73nR9pR5Qt_YuIicDo9cOJzBxAXIOUYxCbuwPZB8Ce1GDKopUzz8nHMA_C53ZgeFnFFCdkRA
     depends_on:
       - db
+      - centrifugo
     networks:
       - app-network
     ports:
       - "8000:8000"
 
-  redis:
-    image: redis:6
-    ports:
-      - 6379:6379
-
   centrifugo:
     image: centrifugo/centrifugo:v6.4.0
     volumes:
-      - ./centrifugo.json:/centrifugo/config.json
+      - ./config.json:/centrifugo/config.json
     command: centrifugo -c /centrifugo/config.json
+    networks:
+      - app-network
     ports:
-      - 8001:8001
-    ulimits:
-      nofile:
-        soft: 65535
-        hard: 65535
-    depends_on:
-      - redis
+      - "8001:8001"
 
 volumes:
   postgres_data:
